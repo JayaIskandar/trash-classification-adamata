@@ -1,0 +1,66 @@
+name: Trash Classification - ResNet Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test-and-train:
+    runs-on: ubuntu-latest
+
+    steps:
+      # STEP 1: CHECKOUT THE REPO
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # STEP 2: SET UP PYTHON ENVIRONMENT
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      # STEP 3: INSTALL DEPENDENCIES 
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r trash-classification-resnet/requirements.txt
+
+      # STEP 4: CONVERT JUPYTER NOTEBOOK TO PYTHON SCRIPT
+      - name: Convert Notebook to Script
+        run: |
+          pip install nbconvert
+          jupyter nbconvert --to script trash-classification-resnet/trash_classification_resnet.ipynb
+
+      # STEP 5: RUN THE PYTHON SCRIPT (CONVERTED FROM NOTEBOOK) 
+      - name: Run Model Training Script
+        run: |
+          python trash-classification-resnet/trash_classification_resnet.py
+
+      # STEP 6: UPLOAD MODEL ARTIFACTS 
+      - name: Upload Model Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: trash_classification_resnet_model
+          path: trash-classification-resnet/trash_classification_resnet.keras
+
+      # STEP 7: LOG IN TO W&B
+      - name: Log in to W&B
+        if: ${{ secrets.WANDB_API_KEY != '' }} 
+        env:
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
+        run: wandb login
+
+      # STEP 8 : DEPLOY TO HUGGING FACE
+      - name: Deploy Model to Hugging Face
+        if: ${{ secrets.HF_TOKEN != '' }} 
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          pip install huggingface-hub
+          huggingface-cli login --token $HF_TOKEN
+          python trash-classification-resnet/deploy_to_hf.py
