@@ -1,7 +1,5 @@
-# trash-classification-adamata
-
 # 🗑️ Trash Classification Models: CNN from Scratch and ResNet50
-# ✨ Introduction
+# Introduction
 This repository is part of my internship test at Adamata for the AI Engineer role. The task was to classify trash images into six categories: paper, glass, plastic, metal, cardboard, and trash.
 
 Dataset: 
@@ -20,12 +18,12 @@ However, I decided to implement two different models to compare their performanc
    
 From these 2 models, I have explored the tradeoffs as well. The dataset used for this task is the TrashNet dataset (https://huggingface.co/datasets/garythung/trashnet).
 
-# 📊 W&B and Hugging Face Results
+# W&B and Hugging Face Results
 ## Access the W&B Results:
-CNN:  https://wandb.ai/jayaiskandar17-individual/trashnet-classification (young-lake-6) 
+CNN:  https://wandb.ai/jayaiskandar17-individual/trashnet-classification (young-lake-6) <br>
 ResNet: https://wandb.ai/jayaiskandar17-individual/trash-classification-o (legendary-dawn-3)
 
 ## Access the Hugging Face Models:
-CNN: https://huggingface.co/jayaiskandar17/trash-classification-pure-cnn/tree/main
+CNN: https://huggingface.co/jayaiskandar17/trash-classification-pure-cnn/tree/main <br>
 ResNet: https://huggingface.co/jayaiskandar17/trash-classification-resnet/tree/main
 
