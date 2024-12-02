@@ -54,15 +54,18 @@ Model files can be downloaded from the site above^
 <br> 
 
 # 📝 **SUMMARY NOTES**
-#### **Based on these 2 models performance, I would say it is very unique since although the custom CNN resulted in lower accuracy score than the ResNet version, yet when it comes to real-world simulation performance, the custom CNN is way more better rather than the ResNet's. When it comes to industry, what we should favor would be the one that can perform well in real-world cases, which is the CNN in this case.**
+#### **When comparing the performance of these two models, the ResNet model clearly performed better at accurately classifying items, such as identifying Trash as Trash. While the custom CNN often showed higher confidence in its predictions, this confidence was misleading and highlighted its tendency to overfit to specific patterns in the training data. For example, the CNN mistakenly labeled Cardboard as Glass with 100% confidence—a clear sign of overfitting.**
 
-#### **Not only that, the evaluation score of the pure CNN has been increasing as the epoch goes further, which I am sure that it will reach the ideal high accuracy if we give it more epochs for training, e.g., 30 epochs (it was set at only 20 epochs due to resource and time efficiency).**
+#### **This issue becomes even more apparent when looking at the evaluation graphs below. The ResNet model shows a more stable and balanced learning curve, which indicates it generalizes better to new data. On the other hand, the CNN's graph was bit rough.**
 
 ## **PURE CNN**
 ![image](https://github.com/user-attachments/assets/3b50401a-0559-4043-adcf-00a034e32acf)
+![image](https://github.com/user-attachments/assets/be4abe78-bb45-4044-8271-0b844422093d)
+
 
 ## **RESNET**
 ![image](https://github.com/user-attachments/assets/6222dca1-1b18-4e66-99cd-9a44b78f961a)
+![image](https://github.com/user-attachments/assets/b5d7b36e-d061-4e67-95dc-1516a107364d)
 
 <br> 
 
