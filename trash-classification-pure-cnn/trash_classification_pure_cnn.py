@@ -1,5 +1,4 @@
 # %%
-pip install datasets torch torchvision scikit-learn matplotlib wandb
 
 # %% [markdown]
 # ##### **IMPORT LIBRARIES**
@@ -329,7 +328,10 @@ plot_predictions(val_dataset, model, class_names, num_images=9, device="cuda")
 # #### **HUGGINGFACE SETUP**
 
 # %%
-!huggingface-cli login
+import subprocess
+
+subprocess.run(["huggingface-cli", "login"])
+
 
 # %%
 from huggingface_hub import HfApi, upload_file
