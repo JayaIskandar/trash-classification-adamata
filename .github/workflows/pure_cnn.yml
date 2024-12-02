@@ -14,52 +14,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # STEP 1 : CHECKOUT THE REPO 
+      # STEP 1: CHECKOUT THE REPO
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # STEP 2 : SET UP PYTHON ENVIORNMENT 
+      # STEP 2: SET UP PYTHON ENVIRONMENT
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
-      # STEP 3 : INSTALL DEPENDENCIES 
+      # STEP 3: INSTALL DEPENDENCIES
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r trash-classification-pure-cnn/requirements.txt
 
-      # STEP 4 : CONVERT JUPYTER NOTEBOOK TO PYTHON SCRIPT
+      # STEP 4: CONVERT JUPYTER NOTEBOOK TO PYTHON SCRIPT
       - name: Convert Notebook to Script
         run: |
           pip install nbconvert
           jupyter nbconvert --to script trash-classification-pure-cnn/trash_classification_pure_cnn.ipynb
 
-      # STEP 5 : RUN THE PYTHON SCRIPT (CONVERTED FROM NOTEBOOK) 
+      # STEP 5: RUN THE PYTHON SCRIPT (CONVERTED FROM NOTEBOOK)
       - name: Run Model Training Script
+        env:
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
         run: |
+          if [ -z "$WANDB_API_KEY" ]; then
+            echo "W&B API key not provided. Skipping W&B logging."
+          else
+            echo "W&B API key found. Running script with W&B integration."
+          fi
           python trash-classification-pure-cnn/trash_classification_pure_cnn.py
 
-      # STEP 6 : UPLOAD MODEL ARTIFACTS 
+      # STEP 6: UPLOAD MODEL ARTIFACTS
       - name: Upload Model Weights
         uses: actions/upload-artifact@v3
         with:
           name: model_weights
           path: trash-classification-pure-cnn/model_weights.pth
 
-      # STEP 7 : LOG INTO W&B
-      - name: Log in to W&B
-        if: env.WANDB_API_KEY != ''
-        env:
-          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY || '' }}
-        run: wandb login || echo "W&B login skipped - API key not provided"
-
-      # STEP 8 : DEPLOY TO HUGGING FACE
+      # STEP 7: DEPLOY TO HUGGING FACE
       - name: Deploy Model to Hugging Face
-        if: env.HF_TOKEN != ''
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN || '' }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          pip install huggingface-hub
-          huggingface-cli login --token $HF_TOKEN || echo "Hugging Face deployment skipped - Token not provided"
+          if [ -z "$HF_TOKEN" ]; then
+            echo "Hugging Face token not provided. Skipping model deployment."
+          else
+            echo "Hugging Face token found. Deploying model."
+            pip install huggingface-hub
+            huggingface-cli login --token $HF_TOKEN
+            python trash-classification-pure-cnn/deploy_to_hf.py
+          fi
