@@ -13,7 +13,7 @@ trash 5.4%**
 
 However, I decided to implement **two different models** to compare their performance:
 
-**1. A pure Convolutional Neural Network (CNN) built from scratch - using PyTorch. <br>
+**1.  A pure Convolutional Neural Network (CNN) built from scratch - using PyTorch. <br>
 2. A ResNet50 model fine-tuned using transfer learning - using TensorFlow.**
    
 From these 2 models, I have explored the tradeoffs as well. The dataset used for this task is the TrashNet dataset (https://huggingface.co/datasets/garythung/trashnet).
@@ -80,3 +80,30 @@ Model files can be downloaded from the site above^
 ```cd trash-classification-resnet``` <br>
 ```pip install -r requirements.txt``` <br>
 ```jupyter notebook trash_classification_resnet.ipynb```
+
+<br>
+
+# Github Actions
+## Setting Up API Keys
+if cloned:
+1. **Weights & Biases (W&B)**:
+   - Obtain your API key from [wandb.ai](https://wandb.ai/settings).
+   - Set it as an environment variable:
+     ```bash
+     export WANDB_API_KEY=your_api_key
+     ```
+
+2. **Hugging Face**:
+   - Obtain your token from [Hugging Face Hub](https://huggingface.co/settings/tokens).
+   - Set it as an environment variable:
+     ```bash
+     export HF_TOKEN=your_huggingface_token
+     ```
+     
+Or if forked:
+1. Go to your forked repository on GitHub.
+2. Navigate to **Settings > Security > Secrets and variables > Actions**.
+3. Add the following secrets:
+   - `WANDB_API_KEY`: Your W&B API key.
+   - `HF_TOKEN`: Your Hugging Face token.
+4. Push or trigger the workflow.
