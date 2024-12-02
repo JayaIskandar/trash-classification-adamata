@@ -49,7 +49,7 @@ Model files can be downloaded from the site above^
 - Achieved 98% accuracy within 10 epochs on the training dataset. <br>
 
 **Cons:** <br>
-- Weaker generalization after testing it on real-world predictions
+- Can struggle with domain-specific generalization if the pre-trained weights are not well-suited for the target dataset.
 
 <br> 
 
